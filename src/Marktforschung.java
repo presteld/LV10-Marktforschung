@@ -52,8 +52,32 @@ public class Marktforschung extends JFrame {
                 alleAusgeben();
             }
         });
+
+
+
+        btnBerechnen.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                berechnen();
+            }
+        });
     }
 
+    private void berechnen() {
+        double davg = 0.0;
+        int itage=0;
+
+        for (Bewertung bewB: alBewertungen) {
+            if (cbLetzte30Tage.isSelected() && bewB.getLdtDatum().isBefore(LocalDateTime.now().minusDays(30)))
+                continue;
+            davg += bewB.berechneDurchschnitt();
+            itage++;
+        }
+        davg /= itage;
+
+        taAusgabe.setText("Durchschnitt aller Bewertungen:\n\n"+ davg + "\n\nAnazhl der herangezogenen Bewertungen: "+ alBewertungen.size() );
+        
+    }
 
 
     private void alleAusgeben() {
@@ -67,6 +91,10 @@ public class Marktforschung extends JFrame {
     }
 
     public void erfassen() {
+        try {
+
+
+
         String sName = txtName.getText().toString();
 
         String sDatum = txtDatum.getText().toString();
@@ -79,7 +107,9 @@ public class Marktforschung extends JFrame {
 
         Bewertung bewKunde = new Bewertung(sName,ldtDatum,iBetreuung,iQualitaet,iTermintreue,iPreis);
         alBewertungen.add(bewKunde);
-
+    }catch (Exception e){
+            taAusgabe.setText("Bitte geben sie ein korrektes Datum ein.\n\n"+ e.getMessage());
+        }
     }
 
 

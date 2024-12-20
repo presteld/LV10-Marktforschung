@@ -18,6 +18,12 @@ public class Bewertung {
         this.iPreis = iPreis;
     }
 
+    public double berechneDurchschnitt(){
+        return (iBetreuung+iQualitaet+iTermintreue+iPreis) / 4.0;
+
+    }
+
+
     public String getsName() {
         return sName;
     }
